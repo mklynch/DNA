@@ -4,7 +4,6 @@
 
 # system
 import csv
-# This program adds up integers in the command line
 import sys
 
 # my subroutines
@@ -21,35 +20,23 @@ import sub2
 
 def read_relative_keys (relative_keys) :
 
-    f = open(relative_keys, 'r')
-    line1=f.readline()
-    print ('line1' ,line1)
+    f = open(relative_keys, 'r', errors="ignore")
+
+    #line1=f.readline()
+    #print ('line1' ,line1)
 
     # should check line1 is as expected
     # Relative Id, Relative Name,Key,Source
 
-    print('x2')
-    lines=0
-    
     with f as csvfile:
-        spamreader = csv.reader(csvfile)
+        spamreader = csv.DictReader(csvfile)
 
         for row in spamreader:
-            lines = lines + 1
+            name=row['Relative Name']
+            if 'white' in name.lower():
+                print(name)
             
-            if (lines == 1) :
-                print ('line 1', row)
-                
-            #print ('line ', lines, ' ', row)
-            #print ()
-            #print (lines) 
-            #if (lines > 35895 ) :
-            # break
-            #print (row)
-            
-    print('x3')
-    print(lines)
-    print ('last line', row)
+    print('completed :)')
 
 ################################
 # main routine
