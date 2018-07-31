@@ -6,7 +6,7 @@
 import csv
 import sys
 
-# my subroutines
+# my subroutines (not currently used)
 import sub2
 
 ####################
@@ -18,38 +18,64 @@ import sub2
 # Source
 
 
-def read_relative_keys (relative_keys) :
+def read_relative_keys1 (relative_keys) :
 
-    f = open(relative_keys, 'r', errors="ignore")
-
-    #line1=f.readline()
-    #print ('line1' ,line1)
-
-    # should check line1 is as expected
-    # Relative Id, Relative Name,Key,Source
-
-    with f as csvfile:
-        spamreader = csv.DictReader(csvfile)
-
-        for row in spamreader:
-            name=row['Relative Name']
-            if 'white' in name.lower():
-                print(name)
-            
+    for row in csv.DictReader(open(relative_keys, 'r', errors="ignore")) :
+        name=row['Relative Name']
+        if 'whitelock' in name.lower():
+            print(row)
+            print(name)
+            print()
     print('completed :)')
 
+def read_relative_keys2 (relative_keys) :
+
+    for row in csv.DictReader(open(relative_keys, 'r', errors="ignore")) :
+        name=row['Relative Id']
+        print(name)
+
+################################
+# 
+################################
+def count_segments(relative_keys,chromosome_browser) :
+
+    for row in csv.DictReader(open(relative_keys, 'r', errors="ignore")) :
+        name=row['Relative Id']
+        numseg[name]=0
+        RelativeName[name]=row['Relative Name']
+        
+    for row in csv.DictReader(open(chromosome_browser, 'r', errors="ignore")) :
+        name=row['RelativeId']
+        numseg[name] += 1
+    
+    # print any id's with more than 10 segments
+    for num in numseg :
+        if (numseg[num] > 5) :
+            print (numseg[num], num, RelativeName[num])
+            
+
+        
 ################################
 # main routine
 ################################
-print ("Hello again World")
-
-relative_keys = sys.argv[1]
-
-print ('infile = ', relative_keys)
 
 #relative_keys = 'C:\\Users\\Mary\\Documents\\Python\\DNA program\\files\\RelativeKeys.csv'
+relative_keys = sys.argv[1]
 
-read_relative_keys(relative_keys)
+#chromosome_browser = 'C:\\Users\\Mary\\Documents\\Python\\DNA program\\files\\ChromosomeBrowser.csv'
+chromosome_browser = sys.argv[2]
+
+print ('RelativeKeys = ', relative_keys)
+print ('ChromosomeBrowser = ', chromosome_browser)
+
+#read_relative_keys1(relative_keys)
+#read_relative_keys2(relative_keys)
+
+numseg=dict()           # indexed by RelativeId
+RelativeName=dict()     # Relative Name
+
+
+count_segments(relative_keys,chromosome_browser)
 
 # read in files from GMPro
 
